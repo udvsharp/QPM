@@ -22,3 +22,5 @@ else()
         )
     endif()
 endif()
+
+qt_postbuild(${QPM_TARGET_NAME})
