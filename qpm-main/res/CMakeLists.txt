@@ -1,0 +1,5 @@
+set(PROJECT_RESOURCES
+
+    "${CMAKE_CURRENT_SOURCE_DIR}/main.qrc"
+
+    PARENT_SCOPE)
