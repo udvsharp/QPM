@@ -23,4 +23,4 @@ else()
     endif()
 endif()
 
-qt_postbuild(${QPM_TARGET_NAME})
+configure_qt_for(${QPM_TARGET_NAME})
