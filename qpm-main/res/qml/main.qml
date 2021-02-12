@@ -5,108 +5,38 @@ import QtQuick.Layouts 1.15
 import "components" as CControls
 import "styles" as CStyles
 
-import com.udvsharp 1.0
-
 ApplicationWindow {
     id: applicationWindow
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("QPM")
     color: CStyles.Color.main
-    minimumWidth: inputForm.width + 2 * CStyles.Dimen.spaceM
-    minimumHeight: inputForm.height + 6 * CStyles.Dimen.spaceM
+    minimumWidth: stack.childrenRect.width < 1920 ? stack.childrenRect.width + 2 * CStyles.Dimen.spaceM : stack.childrenRect.width < 1920
+    minimumHeight: stack.childrenRect.height < 1080 ? stack.childrenRect.height + 6 * CStyles.Dimen.spaceM : stack.childrenRect.height
 
-    AuthController {
-        id: authController
-    }
+    StackView {
+        id: stack
+        initialItem: loginScreen
+        anchors.fill: parent
 
-    ColumnLayout {
-        id: inputForm
-        visible: true
-        width: 320
-        anchors.centerIn: parent
-        spacing: CStyles.Dimen.spaceM
+        Component {
+            id: loginScreen
+            Rectangle {
+                color: "transparent"
+                CControls.LoginInputForm {
 
-        Rectangle {
-            id: logo
-            width: 60
-            height: width
-            color: "transparent"
-
-            Layout.preferredHeight: height
-            Layout.preferredWidth: width
-            Layout.alignment: Qt.AlignCenter
-
-            Text {
-                anchors.centerIn: parent
-                text: qsTr("Q")
-                font {
-                    family: "Helvetica"
-                    pixelSize: parent.width
-                    bold: true
                 }
-                color: CStyles.Color.accentDarkest
             }
         }
 
-        CControls.InputField {
-            id: emailInput
-            placeholderText: "Email"
+        Component {
+            id: main
+            Rectangle {
+                color: "white"
+                CControls.MemberArea {
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
-
-            KeyNavigation.up: passwordInput
-            Keys.onEnterPressed: loginButton.onClicked()
-            Keys.onReturnPressed: loginButton.onClick()
-        }
-
-        CControls.InputField {
-            id: passwordInput
-            placeholderText: "Password"
-
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
-
-            password: true
-
-            KeyNavigation.up: emailInput
-            Keys.onEnterPressed: loginButton.onClicked()
-            Keys.onReturnPressed: loginButton.onClicked()
-        }
-
-        CControls.Button {
-            id: loginButton
-
-            text: "Login"
-
-            colorDefault: CStyles.Color.accentDark
-            colorHovered: CStyles.Color.accentDarkest
-            colorPressed: CStyles.Color.accentLight
-            textColorDefault: CStyles.Color.white
-            textColorPressed: CStyles.Color.accentDark
-
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
-
-            onClicked: {
-                authController.test(emailInput.text, passwordInput.text)
-            }
-        }
-
-        Text {
-            id: forgotPasswordButton
-            text: "Forgot password?"
-            color: CStyles.Color.accentDarkest
-
-            Layout.alignment: Qt.AlignCenter
-            font {
-                pixelSize: CStyles.Dimen.fontXS
-                bold: true
+                }
             }
         }
     }

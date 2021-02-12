@@ -5,6 +5,7 @@
 int main(int argc, char** argv)
 {
     QGuiApplication app(argc, argv);
+    // TODO: registerSingleton
 	qmlRegisterType<qpm::AuthController>("com.udvsharp", 1, 0, "AuthController");
 
 	QQmlApplicationEngine engine;
@@ -13,5 +14,5 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	return app.exec();
+	return QGuiApplication::exec();
 }

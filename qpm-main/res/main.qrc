@@ -5,6 +5,8 @@
     <qresource prefix="/qml/components">
         <file alias="InputField.qml">qml/components/InputField.qml</file>
         <file alias="Button.qml">qml/components/Button.qml</file>
+        <file alias="LoginInputForm.qml">qml/components/LoginInputForm.qml</file>
+        <file alias="MemberArea.qml">qml/components/MemberArea.qml</file>
     </qresource>
     <qresource prefix="/qml/styles">
         <file alias="qmldir">qml/styles/qmldir</file>

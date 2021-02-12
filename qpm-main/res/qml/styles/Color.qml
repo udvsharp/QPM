@@ -8,5 +8,7 @@ QtObject {
     readonly property color accentDark: "#29619e"
     readonly property color accentDarkest: "#083055"
     readonly property color main: "#4b7eb7"
+
+    readonly property color red: "#ff0000"
     readonly property color white: "#ffffff"
 }
