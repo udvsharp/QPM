@@ -1,5 +1,14 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/main.qml</file>
+    <qresource prefix="/qml">
+        <file alias="main.qml">qml/main.qml</file>
+    </qresource>
+    <qresource prefix="/qml/components">
+        <file alias="InputField.qml">qml/components/InputField.qml</file>
+        <file alias="Button.qml">qml/components/Button.qml</file>
+    </qresource>
+    <qresource prefix="/qml/styles">
+        <file alias="qmldir">qml/styles/qmldir</file>
+        <file alias="Color.qml">qml/styles/Color.qml</file>
+        <file alias="Dimen.qml">qml/styles/Dimen.qml</file>
     </qresource>
 </RCC>

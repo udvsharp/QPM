@@ -1,76 +1,96 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.15
+
+import "components" as CControls
+import "styles" as CStyles
 
 ApplicationWindow {
     id: applicationWindow
-
-    // TODO: move to another module
-    Item {
-        id: colors
-        readonly property color accent: "#4b7eb7"
-        readonly property color accentLight: "#8daed9"
-        readonly property color accentDark: "#29619e"
-        readonly property color accentDarkest: "#083055"
-        readonly property color main: "#4b7eb7"
-        readonly property color white: "#ffffff"
-    }
-
-    // TODO: move to another module
-    Item {
-        id: dimensions
-        readonly property int spaceM: 25
-        readonly property int fieldHeight: 40
-    }
-
     visible: true
     width: 640
     height: 480
     title: qsTr("Hello World")
-    color: colors.main
-    minimumWidth: inputForm.width + 2 * dimensions.spaceM
+    color: CStyles.Color.main
+    minimumWidth: inputForm.width + 2 * CStyles.Dimen.spaceM
+    minimumHeight: inputForm.height + 6 * CStyles.Dimen.spaceM
 
-    Rectangle {
+    ColumnLayout {
         id: inputForm
         visible: true
         width: 320
-        height: 120
+        height: childrenRect.height
         anchors.centerIn: parent
-        color: colors.accentDark
+        spacing: CStyles.Dimen.spaceM
 
-        TextInput {
-            id: textInput
-            width: parent.width
-            height: dimensions.fieldHeight
-//            background: colors.accentLight
+        Rectangle {
+            id: logo
+            width: 60
+            height: width
+            color: "transparent"
 
-            text: qsTr("Text Input")
+            Layout.preferredHeight: height
+            Layout.preferredWidth: width
+            Layout.alignment: Qt.AlignCenter
 
-            font.pixelSize: height / 2.5
+            Text {
+                anchors.centerIn: parent
+                text: qsTr("Q")
+                font {
+                    family: "Helvetica"
+                    pixelSize: parent.width
+                    bold: true
+                }
+                color: CStyles.Color.accentDarkest
+            }
         }
 
-    }
+        CControls.InputField {
+            id: emailInput
+            hint: "Email"
 
-    Rectangle {
-        id: logo
-        anchors {
-            bottom: inputForm.top
-            horizontalCenter: inputForm.horizontalCenter
-
-            bottomMargin: width / 2
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: height
         }
-        width: 40
-        height: width
-        color: "transparent"
+
+        CControls.InputField {
+            id: passwordInput
+            hint: "Password"
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: height
+
+            password: true
+        }
+
+        CControls.Button {
+            id: loginButton
+
+            text: "Login"
+
+            colorDefault: CStyles.Color.accentDark
+            colorHovered: CStyles.Color.accentDarkest
+            colorPressed: CStyles.Color.accentLight
+            textColorDefault: CStyles.Color.white
+            textColorPressed: CStyles.Color.accentDark
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: height
+        }
 
         Text {
-            anchors.horizontalCenter: parent
-            text: qsTr("Q")
+            id: forgotPasswordButton
+            text: "Forgot password?"
+            color: CStyles.Color.accentDarkest
+
+            Layout.alignment: Qt.AlignCenter
             font {
-                family: "Helvetica"
-                pixelSize: parent.width
+                pixelSize: CStyles.Dimen.fontXS
                 bold: true
             }
-            color: colors.accentDarkest
         }
     }
 }
