@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.15
 import "components" as CControls
 import "styles" as CStyles
 
+import com.udvsharp 1.0
+
 ApplicationWindow {
     id: applicationWindow
     visible: true
@@ -15,11 +17,14 @@ ApplicationWindow {
     minimumWidth: inputForm.width + 2 * CStyles.Dimen.spaceM
     minimumHeight: inputForm.height + 6 * CStyles.Dimen.spaceM
 
+    AuthController {
+        id: authController
+    }
+
     ColumnLayout {
         id: inputForm
         visible: true
         width: 320
-        height: childrenRect.height
         anchors.centerIn: parent
         spacing: CStyles.Dimen.spaceM
 
@@ -47,22 +52,30 @@ ApplicationWindow {
 
         CControls.InputField {
             id: emailInput
-            hint: "Email"
+            placeholderText: "Email"
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: height
+            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
+
+            KeyNavigation.up: passwordInput
+            Keys.onEnterPressed: loginButton.onClicked()
+            Keys.onReturnPressed: loginButton.onClick()
         }
 
         CControls.InputField {
             id: passwordInput
-            hint: "Password"
+            placeholderText: "Password"
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: height
+            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
 
             password: true
+
+            KeyNavigation.up: emailInput
+            Keys.onEnterPressed: loginButton.onClicked()
+            Keys.onReturnPressed: loginButton.onClicked()
         }
 
         CControls.Button {
@@ -78,7 +91,11 @@ ApplicationWindow {
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: height
+            Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
+
+            onClicked: {
+                authController.test(emailInput.text, passwordInput.text)
+            }
         }
 
         Text {

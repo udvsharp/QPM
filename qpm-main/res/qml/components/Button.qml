@@ -93,6 +93,7 @@ Controls.Button {
         }
 
         onClicked: {
+            button.onClicked()
             clickedColorAnimation.start()
             clickedTextAnimation.start()
         }
