@@ -6,7 +6,6 @@ int main(int argc, char **argv) {
 	using namespace qpm;
 
 	QGuiApplication app(argc, argv);
-	// TODO: registerSingleton
 	qmlRegisterSingletonType<AuthController>("com.udvsharp.AuthController", 1, 0, "AuthController",
 	                                              &AuthController::qmlInstance);
 
