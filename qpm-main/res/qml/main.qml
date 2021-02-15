@@ -24,7 +24,6 @@ ApplicationWindow {
         Component {
             id: loginScreen
             Rectangle {
-                anchors.fill: parent
                 color: CStyles.Color.main
                 CControls.LoginInputForm {
                     onChangeToMemberArea: {

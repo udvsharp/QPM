@@ -12,7 +12,7 @@ namespace qpm {
 	private:
 		QString mName;
 		QString mDescription;
-		QString mPriority; // TODO: enum
+		int8_t mPriority; // TODO: enum
 		int32_t mId;
 	};
 }

@@ -4,6 +4,7 @@
 #define QPM_PROJECT
 
 #include <QLIst>
+#include <QUrl>
 #include "Ticket.hpp"
 
 namespace qpm {
@@ -12,6 +13,9 @@ namespace qpm {
 
 	private:
 		QString mName;
+		QUrl mIcon;
+		int32_t mId;
+
 		QList<Ticket> mTickets;
 	};
 }
