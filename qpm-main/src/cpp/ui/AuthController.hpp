@@ -7,11 +7,11 @@
 
 namespace qpm {
 
-	// TODO: singleton
 	class AuthController : public QObject {
 		Q_OBJECT
 	public:
-		explicit AuthController(QObject* parent = nullptr) : QObject(parent) {}
+		static AuthController *instance();
+		static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
 
 		Q_INVOKABLE static bool test(const QString& login, const QString& password) {
 			qDebug() << "Login clicked!"
@@ -20,7 +20,10 @@ namespace qpm {
 			// TODO: Verify Credentials
 			return true;
 		}
+	private:
+		explicit AuthController(QObject* parent = nullptr) : QObject(parent) {}
 
+		static AuthController* sInstance;
 	};
 }
 

@@ -5,14 +5,9 @@ import QtQuick.Layouts 1.15
 import "../components" as CControls
 import "../styles" as CStyles
 
-import com.udvsharp 1.0
+import com.udvsharp.AuthController 1.0
 
 ColumnLayout {
-
-    // TODO: singleton
-    AuthController {
-        id: authController
-    }
 
     signal changeToMemberArea()
 
@@ -89,7 +84,7 @@ ColumnLayout {
 
         onClicked: {
             // TODO: login logic
-            let result = authController.test(emailInput.text, passwordInput.text)
+            let result = AuthController.test(emailInput.text, passwordInput.text)
 
             if (result) {
                 inputForm.changeToMemberArea()
