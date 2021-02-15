@@ -81,6 +81,7 @@ Controls.Button {
     MouseArea {
         id: mouseArea; anchors.fill: parent
         hoverEnabled: true
+        cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onEntered: {
             enteredColorAnimation.start()

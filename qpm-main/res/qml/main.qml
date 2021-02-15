@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.15
 
@@ -11,7 +11,8 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("QPM")
-    color: CStyles.Color.main
+    color: CStyles.Color.white
+    visibility: ApplicationWindow.Maximized
     minimumWidth: 640
     minimumHeight: 480
 
@@ -23,11 +24,12 @@ ApplicationWindow {
         Component {
             id: loginScreen
             Rectangle {
-                color: "transparent"
+                anchors.fill: parent
+                color: CStyles.Color.main
                 CControls.LoginInputForm {
                     onChangeToMemberArea: {
-                        stack.replace(main)
                         console.log("Proceeding to member area...")
+                        stack.replace(main)
                     }
                 }
             }

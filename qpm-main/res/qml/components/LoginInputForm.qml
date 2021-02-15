@@ -99,6 +99,13 @@ ColumnLayout {
         text: "Forgot password?"
         color: CStyles.Color.accentDarkest
 
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+            z: 1
+            hoverEnabled: true
+        }
+
         Layout.alignment: Qt.AlignCenter
         font {
             pixelSize: CStyles.Dimen.fontXS
