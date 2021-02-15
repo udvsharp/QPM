@@ -12,8 +12,8 @@ ApplicationWindow {
     height: 480
     title: qsTr("QPM")
     color: CStyles.Color.main
-    minimumWidth: stack.childrenRect.width < 1920 ? stack.childrenRect.width + 2 * CStyles.Dimen.spaceM : stack.childrenRect.width < 1920
-    minimumHeight: stack.childrenRect.height < 1080 ? stack.childrenRect.height + 6 * CStyles.Dimen.spaceM : stack.childrenRect.height
+    minimumWidth: 640
+    minimumHeight: 480
 
     StackView {
         id: stack
@@ -25,18 +25,18 @@ ApplicationWindow {
             Rectangle {
                 color: "transparent"
                 CControls.LoginInputForm {
-
+                    onChangeToMemberArea: {
+                        stack.replace(main)
+                        console.log("Proceeding to member area...")
+                    }
                 }
             }
         }
 
         Component {
             id: main
-            Rectangle {
-                color: "white"
-                CControls.MemberArea {
+            CControls.MemberArea {
 
-                }
             }
         }
     }

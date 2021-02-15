@@ -14,6 +14,8 @@ ColumnLayout {
         id: authController
     }
 
+    signal changeToMemberArea()
+
     id: inputForm
     visible: true
     width: CStyles.Dimen.fieldWidthDefault
@@ -90,7 +92,7 @@ ColumnLayout {
             let result = authController.test(emailInput.text, passwordInput.text)
 
             if (result) {
-                stack.replace(main)
+                inputForm.changeToMemberArea()
             } else {
                 error.visible = true
             }
