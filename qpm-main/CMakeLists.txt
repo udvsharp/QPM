@@ -23,4 +23,10 @@ else()
     endif()
 endif()
 
+target_include_directories(
+    ${QPM_TARGET_NAME}
+    PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpp"
+)
+
 configure_qt_for(${QPM_TARGET_NAME})
