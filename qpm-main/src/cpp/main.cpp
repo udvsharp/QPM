@@ -1,15 +1,21 @@
 #include <QtQuick>
 
+#include "api/Api.hpp"
+#include "api/ApiWrapper.hpp"
 #include "ui/AuthController.hpp"
+
+#include "util/Singleton.hpp"
 
 int main(int argc, char **argv) {
 	using namespace qpm;
+
+	// auto& s = Singleton<ApiWrapper>::Instance();
 
 	QGuiApplication app(argc, argv);
 
 	// Register qml types
 	qmlRegisterSingletonType<AuthController>("com.udvsharp.AuthController", 1, 0, "AuthController",
-	                                         &AuthController::qmlInstance);
+	                                         &AuthController::QMLInstance);
 	QQmlApplicationEngine engine;
 	engine.load("qrc:///qml/main.qml");
 

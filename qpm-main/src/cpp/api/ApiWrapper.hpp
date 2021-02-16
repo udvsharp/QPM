@@ -4,30 +4,44 @@
 #define QPM_APIWRAPPER
 
 #include "Api.hpp"
+#include "util/Singleton.hpp"
+
+#include <functional>
 
 namespace qpm {
-	class ApiWrapper {
+	class SINGLETON(ApiWrapper) {
+		DECL_SINGLETON(ApiWrapper)
+	private:
+		using handleFunction = std::function<void(const QJsonObject &)>;
+		using finishFunction = std::function<void()>;
+
+
+		using loginFunction = std::function<void(bool, const QString&)>;
+	private:
+		static const QString KEY_QNETWORK_REPLY_ERROR;
+		static const QString KEY_CONTENT_NOT_FOUND;
 	private:
 		ApiWrapper();
 	public:
-		static ApiWrapper& Instance() {
-			if (sInstance == nullptr) {
-				sInstance = new ApiWrapper;
-			}
-			return *sInstance;
-		}
+		void loginUser(const QString &login, const QString &password, const loginFunction &f);
+		void projects(
+				const handleFunction &successRoutine,
+				const handleFunction &errorRoutine);
+		void tickets(int32_t projectId,
+		             const handleFunction &successRoutine,
+		             const handleFunction &errorRoutine);
+	private:
+		static bool onFinishRequest(QNetworkReply *reply);
+		static void handleQtNetworkErrors(QNetworkReply *reply, const QJsonObject &obj);
+		static QJsonObject parseReply(QNetworkReply *reply);
 
-		ApiWrapper(const ApiWrapper& other) = delete;
-		ApiWrapper& operator=(const ApiWrapper& other) = delete;
-
-		void loginUser(QString login, QString password);
-		void projects();
-		void tickets(int32_t projectId);
+		template<typename F>
+		void setupSignals(QNetworkReply *reply, F f,
+		                  const handleFunction &successRoutine,
+		                  const handleFunction &errorRoutine);
 	private:
 		Api mApi;
 		QString mAuthToken;
-	private:
-		static ApiWrapper* sInstance;
 	};
 }
 

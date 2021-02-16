@@ -6,18 +6,23 @@
 #include <QString>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QByteArray>
 
 #include <optional>
 
 namespace qpm {
 	class Api : QObject {
 	public:
-		explicit Api(QString  baseUrl, const QSslConfiguration& sslConfiguration);
+		explicit Api(QString baseUrl, const QSslConfiguration &sslConfiguration = QSslConfiguration());
 
-		std::optional<QJsonObject> loginUser(QString login, QString password);
-		void registerUser(QString login, QString password);
-		std::optional<QJsonObject> projects(QString authToken);
-		std::optional<QJsonObject> tickets(QString authToken, int32_t projectId);
+		QNetworkReply *loginUser(const QString &login, const QString &password);
+		QNetworkReply *registerUser(const QString &login, const QString &password);
+		QNetworkReply *projects(const QString &authToken);
+		QNetworkReply *tickets(const QString &authToken, int32_t projectId);
+	private:
+		static QByteArray variantMapToJson(const QVariantMap &map);
+		static void ignoreDefaultErrors(QNetworkReply *reply);
 	private:
 		QString mBaseUrl;
 		QNetworkAccessManager mManager;

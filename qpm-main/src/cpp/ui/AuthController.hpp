@@ -5,25 +5,25 @@
 
 #include <QtQuick>
 
+#include "api/ApiWrapper.hpp"
+#include "util/Singleton.hpp"
+
 namespace qpm {
 
-	class AuthController : public QObject {
-		Q_OBJECT
-	public:
-		static AuthController *instance();
-		static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
-
-		Q_INVOKABLE static bool test(const QString& login, const QString& password) {
-			qDebug() << "Login clicked!"
-				<< "Login:" << login
-				<< "Password:" << password;
-			// TODO: Verify Credentials
-			return true;
-		}
+	class QT_SINGLETON(AuthController) {
+	Q_OBJECT
 	private:
-		explicit AuthController(QObject* parent = nullptr) : QObject(parent) {}
+		DECL_SINGLETON(AuthController)
+	public:
+		static QObject *QMLInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
+	public slots:
 
-		static AuthController* sInstance;
+	signals:
+		void authCompleted(bool success, const QString &msg);
+	public: // QML Handlers
+		Q_INVOKABLE static bool tryAuthUser(const QString &login, const QString &password);
+	private:
+		explicit AuthController(QObject *parent = nullptr) : QObject(parent) {}
 	};
 }
 

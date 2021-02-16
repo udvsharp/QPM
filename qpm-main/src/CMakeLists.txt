@@ -14,4 +14,6 @@ set(PROJECT_SOURCES
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/ApiWrapper.hpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/ApiWrapper.cpp"
 
+		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/util/Singleton.hpp"
+
     PARENT_SCOPE)

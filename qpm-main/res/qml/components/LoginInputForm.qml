@@ -17,6 +17,19 @@ ColumnLayout {
     anchors.centerIn: parent
     spacing: CStyles.Dimen.spaceM
 
+    Connections {
+        target: AuthController
+
+        function onAuthCompleted(success, msg) {
+            if (success) {
+                inputForm.changeToMemberArea()
+            } else {
+                error.text = msg
+                error.visible = true
+            }
+        }
+    }
+
     Rectangle {
         id: logo
         width: 60
@@ -49,7 +62,7 @@ ColumnLayout {
 
         KeyNavigation.up: passwordInput
         Keys.onEnterPressed: loginButton.onClicked()
-        Keys.onReturnPressed: loginButton.onClick()
+        Keys.onReturnPressed: loginButton.onClicked()
     }
 
     CControls.InputField {
@@ -83,14 +96,16 @@ ColumnLayout {
         Layout.preferredHeight: CStyles.Dimen.fieldHeightDefault
 
         onClicked: {
-            // TODO: login logic
-            let result = AuthController.test(emailInput.text, passwordInput.text)
-
-            if (result) {
-                inputForm.changeToMemberArea()
-            } else {
+            let login = emailInput.text
+            let password = passwordInput.text
+            if (login.length <= 2 || password.length <= 2) {
+                error.text = "At least 3 symbols are expected..."
                 error.visible = true
+                return
             }
+
+            error.visible = false
+            AuthController.tryAuthUser(login, password)
         }
     }
 
