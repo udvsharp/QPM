@@ -7,7 +7,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-#define JSON_KEY_TOKEN "token"
+#include "api/Constants.hpp"
 
 namespace qpm {
 	const QString ApiWrapper::KEY_QNETWORK_REPLY_ERROR = "QNetworkReplyError";

@@ -49,7 +49,6 @@ SplitView {
         }
     }
 
-
     ListView {
         id: projectsListView
 
