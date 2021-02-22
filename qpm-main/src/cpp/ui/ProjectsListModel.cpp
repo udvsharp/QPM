@@ -6,82 +6,84 @@
 #include "api/Constants.hpp"
 
 namespace qpm {
-	static void (*const defaultErrorRoutine)(const QJsonObject &) =
-	[](const QJsonObject &response) { qDebug() << "Error!" << response; };
+static void (*const defaultErrorRoutine)(const QJsonObject &) =
+    [](const QJsonObject &response) { qDebug() << "Error!" << response; };
 
-	ProjectsListModel::ProjectsListModel(QObject *parent)
-			: QAbstractListModel(parent) {}
+ProjectsListModel::ProjectsListModel(QObject *parent)
+    : QAbstractListModel(parent) {}
 
-	void ProjectsListModel::update() {
-		auto &apiWrapper = ApiWrapper::Instance();
+void ProjectsListModel::update() {
+  auto &apiWrapper = ApiWrapper::Instance();
 
-		mData.projects.clear();
-		apiWrapper.projects(
-				[this](auto &&PH1) {
-					beginResetModel();
-					handleProjectsResponse(std::forward<decltype(PH1)>(PH1));
-					endResetModel();
-				},
-				defaultErrorRoutine);
+  mData.projects.clear();
+  apiWrapper.projects(
+      [this](auto &&PH1) {
+        beginResetModel();
+        handleProjectsResponse(std::forward<decltype(PH1)>(PH1));
+        endResetModel();
+      },
+      defaultErrorRoutine);
 
-		emit updated();
-	}
+  emit updated();
+}
 
-	QList<Project> ProjectsListModel::parseProjects(const QJsonArray &jsonArr) {
-		QList<Project> projects;
-		for (const auto &jsonValue : jsonArr) {
-			auto json = jsonValue.toObject();
+QList<Project> ProjectsListModel::parseProjects(const QJsonArray &jsonArr) {
+  QList<Project> projects;
+  for (const auto &jsonValue : jsonArr) {
+    auto json = jsonValue.toObject();
 
-			auto project = Project::from(json);
-			if (project.has_value()) {
-				projects.append(std::move(project.value()));
-			}
-		}
-		return projects;
-	}
+    auto project = Project::from(json);
+    if (project.has_value()) {
+      projects.append(std::move(project.value()));
+    }
+  }
+  return projects;
+}
 
-	QHash<int, QByteArray> ProjectsListModel::roleNames() const {
-		QHash<int, QByteArray> roles;
-		roles[TitleRole] = "title";
-		roles[ImageRole] = "imageUrl";
-		return roles;
-	}
+QHash<int, QByteArray> ProjectsListModel::roleNames() const {
+  QHash<int, QByteArray> roles;
+  roles[TitleRole] = "title";
+  roles[ImageRole] = "imageUrl";
+  return roles;
+}
 
-	int ProjectsListModel::rowCount(const QModelIndex &parent) const {
-		if (parent.isValid()) {
-			return 0;
-		}
+int ProjectsListModel::rowCount(const QModelIndex &parent) const {
+  if (parent.isValid()) {
+    return 0;
+  }
 
-		return mData.projects.size();
-	}
+  return mData.projects.size();
+}
 
-	QVariant ProjectsListModel::data(const QModelIndex &index, int role) const {
-		if (!index.isValid()) {
-			return QVariant();
-		}
+QVariant ProjectsListModel::data(const QModelIndex &index, int role) const {
+  if (!index.isValid()) {
+    return QVariant();
+  }
 
-		auto &currentObject = mData.projects.at(index.row());
-		switch (role) {
-			case TitleRole:return QVariant(currentObject.title());
-			case ImageRole:return QVariant(currentObject.icon());
-		}
-	}
+  auto &currentObject = mData.projects.at(index.row());
+  switch (role) {
+    case TitleRole:
+      return QVariant(currentObject.title());
+    case ImageRole:
+      return QVariant(currentObject.icon());
+  }
+}
 
-	void ProjectsListModel::handleProjectsResponse(const QJsonObject &response) {
-		qDebug() << "Success:" << response;
+void ProjectsListModel::handleProjectsResponse(const QJsonObject &response) {
+  qDebug() << "Success:" << response;
 
-		if (response.contains(JSON_KEY_PROJECTS)) {
-			QJsonArray projectsJson = response.value(JSON_KEY_PROJECTS).toArray();
+  if (response.contains(JSON_KEY_PROJECTS)) {
+    QJsonArray projectsJson = response.value(JSON_KEY_PROJECTS).toArray();
 
-			auto projects = parseProjects(projectsJson);
-			mData.projects = std::move(projects);
-			emit projectsChanged();
-		} else {
-			qDebug() << "No projects in response!";
-		}
-	}
+    auto projects = parseProjects(projectsJson);
+    mData.projects = std::move(projects);
+    emit projectsChanged();
+  } else {
+    qDebug() << "No projects in response!";
+  }
+}
 
-	void ProjectsListModel::select(int32_t index) {
-		mTicketsModel->update(mData.projects.at(index).id());
-	}
+void ProjectsListModel::select(int32_t index) {
+  mTicketsModel->update(mData.projects.at(index).id());
+}
 }  // namespace qpm

@@ -62,16 +62,6 @@ SplitView {
                     onClicked: {
                         projectsListView.currentIndex = index
                         ProjectsListModel.select(index)
-//                        let filteredTicketsModel = Qt.createQmlObject('import QtQuick;
-//                            ListModel {}', parent);
-//                        for(let i = 0; i < ticketsModel.count; ++i) {
-//                            let ticket = ticketsModel.get(i);
-//                            if (ticket.pid === project.pid) {
-//                                filteredTicketsModel.append(ticket);
-//                            }
-//                        }
-//
-//                        ticketsListView.model = filteredTicketsModel
                     }
                 }
             }
@@ -98,8 +88,8 @@ SplitView {
 
                 color: ListView.isCurrentItem ? "lightblue" : "transparent"
                 Column {
-                    Text { text: '<b>Name:</b> ' + name }
-                    Text { text: '<b>Number:</b> ' + number }
+                    Text { text: '<b>Title:</b> ' + model.title }
+                    Text { text: '<b>Description:</b> ' + model.description }
                 }
 
                 MouseArea {
