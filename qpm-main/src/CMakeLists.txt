@@ -15,6 +15,7 @@ set(PROJECT_SOURCES
 
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/Api.hpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/Api.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/ApiLink.hpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/ApiWrapper.hpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/cpp/api/ApiWrapper.cpp"
 
