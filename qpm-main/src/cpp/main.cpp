@@ -3,29 +3,32 @@
 #include "api/Api.hpp"
 #include "api/ApiWrapper.hpp"
 #include "ui/AuthController.hpp"
-#include "ui/DataProvider.hpp"
-
+#include "ui/ProjectsListModel.hpp"
 #include "util/Singleton.hpp"
 
+void registerQmlTypes();
+
 int main(int argc, char **argv) {
-	using namespace qpm;
+  QGuiApplication app(argc, argv);
 
-	// auto& s = Singleton<ApiWrapper>::Instance();
+  registerQmlTypes();
+  QQmlApplicationEngine engine;
+  engine.load("qrc:///qml/main.qml");
 
-	QGuiApplication app(argc, argv);
+  if (engine.rootObjects().isEmpty()) {
+    qDebug() << "engine.rootObjects() is empty!";
+    return -1;
+  }
 
-	// Register qml types
-	qmlRegisterSingletonType<AuthController>("com.udvsharp.AuthController", 1, 0, "AuthController",
-	                                         &AuthController::QMLInstance);
-	qmlRegisterSingletonType<AuthController>("com.udvsharp.DataProvider", 1, 0, "DataProvider",
-	                                         &DataProvider::QMLInstance);
-	QQmlApplicationEngine engine;
-	engine.load("qrc:///qml/main.qml");
+  return QGuiApplication::exec();
+}
 
-	if (engine.rootObjects().isEmpty()) {
-		qDebug() << "engine.rootObjects() is empty!";
-		return -1;
-	}
+void registerQmlTypes() {
+  using namespace qpm;
 
-	return QGuiApplication::exec();
+  Q_UNUSED(qmlRegisterSingletonType<AuthController>(
+      "com.udvsharp.AuthController", 1, 0, "AuthController",
+      &AuthController::QMLInstance));
+  Q_UNUSED(qmlRegisterType<ProjectsListModel>("com.udvsharp.ProjectsListModel",
+                                              1, 0, "ProjectsListModel"));
 }

@@ -7,30 +7,33 @@
 #include "api/Constants.hpp"
 
 namespace qpm {
-	Ticket::Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id, QObject *parent) : QObject(
-			parent), mName(std::move(
+	Ticket::Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id  ) : mName(std::move(
 			m_name)), mDescription(std::move(m_description)), mPriority(m_priority), mId(m_id) {}
 
-	Ticket::Ticket(const Ticket &other) {
+    Ticket& Ticket::operator=(const Ticket &other) {
 		if (this == &other) {
-			return;
+            return *this;
 		}
 
 		mName = other.mName;
 		mDescription = other.mDescription;
 		mPriority = other.mPriority;
 		mId = other.mId;
+
+        return *this;
 	}
 
-	Ticket::Ticket(Ticket &&other) {
+	Ticket &Ticket::operator=(Ticket &&other) noexcept {
 		if (this == &other) {
-			return;
+			return *this;
 		}
 
 		mName = std::move(other.mName);
 		mDescription = std::move(other.mDescription);
 		mPriority = other.mPriority;
 		mId = other.mId;
+
+		return *this;
 	}
 
 	std::optional<Ticket> Ticket::from(const QJsonObject &json) {

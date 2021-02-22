@@ -5,8 +5,6 @@ import QtQuick.Layouts
 import "components" as CControls
 import "styles" as CStyles
 
-import com.udvsharp.DataProvider 1.0
-
 ApplicationWindow {
     id: applicationWindow
     visible: true
@@ -29,7 +27,6 @@ ApplicationWindow {
                 color: CStyles.Color.main
                 CControls.LoginInputForm {
                     onChangeToMemberArea: {
-                        DataProvider.getProjects();
                         console.log("Proceeding to member area...")
                         stack.replace(main)
                     }

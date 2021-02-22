@@ -10,13 +10,16 @@
 #include <optional>
 
 namespace qpm {
-	class Ticket : public QObject {
-		Q_OBJECT
+	class Ticket {
+	Q_GADGET
 	public:
-		Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id, QObject* parent = nullptr);
+		Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id);
 
-		Ticket(const Ticket &other);
-		Ticket(Ticket &&other);
+        Ticket(const Ticket &other) { *this = other; };
+        Ticket& operator=(const Ticket& other);
+
+		Ticket(Ticket &&other) noexcept { *this = std::move(other); };
+		Ticket& operator=(Ticket&& other) noexcept;
 	public:
 		static std::optional<Ticket> from(const QJsonObject &obj);
 	private:
