@@ -7,63 +7,17 @@ import "../styles" as CStyles
 
 import com.udvsharp.ProjectsListModel 1.0
 import com.udvsharp.AuthController 1.0
-//import com.udvsharp.TicketsModel 1.0
+import com.udvsharp.TicketsListModel 1.0
 
 SplitView {
     id: splitView
 
-    ListModel {
-        id: projectsModel
-        ListElement {
-            pid: 0
-            name: "Bill Smith"
-            number: "555 3264"
-        }
-        ListElement {
-            pid: 1
-            name: "John Brown"
-            number: "555 8426"
-        }
-        ListElement {
-            pid: 2
-            name: "Sam Wise"
-            number: "555 0473"
-        }
-    }
-
-    ListModel {
-        id: ticketsModel
-        ListElement {
-            pid: 0
-            tid: 0
-            name: "Bill Smith"
-            number: "555 3264"
-        }
-        ListElement {
-            pid: 0
-            tid: 1
-            name: "John Brown"
-            number: "555 8426"
-        }
-        ListElement {
-            pid: 1
-            tid: 2
-            name: "Sam Wise"
-            number: "555 0473"
-        }
-    }
-
-    ProjectsListModel {
-        id: projectsListModel
-    }
-
     Component.onCompleted: {
-        projectsListModel.update()
+        ProjectsListModel.update()
     }
 
     ListView {
         id: projectsListView
-
 
         SplitView.minimumWidth: 0.1 * splitView.width
         SplitView.preferredWidth: 0.25 * splitView.width
@@ -78,12 +32,12 @@ SplitView {
                 height: 50
 
                 color: ListView.isCurrentItem ? "lightblue" : "transparent"
-                Row {
+                Rectangle {
                     Image {
                         id: projectImage
                         width: height
                         height: projectDelegateContainer.height;
-                        source: "somefile" // TODO: connect to model
+                        source: model.imageSrc // TODO: connect to model
                     }
 
                     Text {
@@ -107,24 +61,23 @@ SplitView {
                     cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
                     onClicked: {
                         projectsListView.currentIndex = index
-
-                        let project = projectsModel.get(index)
-                        let filteredTicketsModel = Qt.createQmlObject('import QtQuick;
-                            ListModel {}', parent);
-                        for(let i = 0; i < ticketsModel.count; ++i) {
-                            let ticket = ticketsModel.get(i);
-                            if (ticket.pid === project.pid) {
-                                filteredTicketsModel.append(ticket);
-                            }
-                        }
-
-                        ticketsListView.model = filteredTicketsModel
+                        ProjectsListModel.select(index)
+//                        let filteredTicketsModel = Qt.createQmlObject('import QtQuick;
+//                            ListModel {}', parent);
+//                        for(let i = 0; i < ticketsModel.count; ++i) {
+//                            let ticket = ticketsModel.get(i);
+//                            if (ticket.pid === project.pid) {
+//                                filteredTicketsModel.append(ticket);
+//                            }
+//                        }
+//
+//                        ticketsListView.model = filteredTicketsModel
                     }
                 }
             }
         }
 
-        model: projectsListModel
+        model: ProjectsListModel
         delegate: projectDelegate
         focus: true
     }
@@ -164,6 +117,7 @@ SplitView {
         }
 
         delegate: ticketDelegate
+        model: TicketsListModel
         focus: true
     }
 }

@@ -87,7 +87,7 @@ namespace qpm {
 
 	void Api::ignoreDefaultErrors(QNetworkReply *reply) {
 		// TODO: make this work maybe
-		static QList<QSslError> expectedErrors {
+		static QList<QSslError> expectedErrors{
 				QSslError(QSslError::SelfSignedCertificate),
 				QSslError(QSslError::InvalidCaCertificate),
 				QSslError(QSslError::CertificateUntrusted),

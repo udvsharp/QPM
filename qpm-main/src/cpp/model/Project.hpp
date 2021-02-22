@@ -17,12 +17,12 @@ namespace qpm {
 	public:
 		Project(QString name, QUrl icon, int32_t id, const QList<Ticket> &tickets = {});
 
-        Project(const Project &other) { *this = other; };
-        Project& operator=(const Project& other);
+		Project(const Project &other) { *this = other; };
+		Project &operator=(const Project &other);
 
-        Project(Project &&other) noexcept { *this = std::move(other); };
-        Project &operator=(Project &&other) noexcept;
-    public:
+		Project(Project &&other) noexcept { *this = std::move(other); };
+		Project &operator=(Project &&other) noexcept;
+	public:
 		void setTickets(const QList<Ticket> &tickets) { mTickets = tickets; };
 		int32_t id() const { return mId; };
 

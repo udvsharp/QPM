@@ -9,61 +9,66 @@
 #include "api/ApiWrapper.hpp"
 #include "model/Project.hpp"
 #include "util/Singleton.hpp"
+#include "TicketsListModel.hpp"
 
 namespace qpm {
 
-class ProjectsListModel : public QAbstractListModel {
-  Q_OBJECT
-  Q_PROPERTY(QList<Project> projects READ projects WRITE setProjects NOTIFY
-                 projectsChanged)
- public:
-  enum Roles {
-    TitleRole = Qt::UserRole + 1,
-    ImageRole,
-  };
+	class ProjectsListModel : public QAbstractListModel {
+	Q_OBJECT
+		Q_PROPERTY(QList<Project> projects READ projects WRITE setProjects NOTIFY
+				           projectsChanged)
+	public:
+		enum Roles {
+			TitleRole = Qt::UserRole + 1,
+			ImageRole,
+		};
 
- public:
-  explicit ProjectsListModel(QObject *parent = nullptr);
+	public:
+		explicit ProjectsListModel(QObject *parent = nullptr);
 
-  QList<Project> &projects() { return mData.projects; }
- public slots:
-  void setProjects(const QList<Project> &projects) {
-    mData.projects = projects;
-    emit projectsChanged();
-  }
+		QList<Project> &projects() { return mData.projects; }
 
- signals:
-  void updated();
-  void projectsChanged();
+		void connectTo(TicketsListModel *model) { mTicketsModel = model; }
+	public slots:
+		void setProjects(const QList<Project> &projects) {
+			mData.projects = projects;
+			emit projectsChanged();
+		}
 
- public:  // QML Handlers
-  Q_INVOKABLE void update();
+	signals:
+		void updated();
+		void projectsChanged();
 
- private:
-  void handleProjectsResponse(const QJsonObject &response);
-  void handleTicketsResponse(const QJsonObject &response, Project &project);
+	public:  // QML Handlers
+		Q_INVOKABLE void update();
+		Q_INVOKABLE void select(int32_t index);
 
-  static QList<Ticket> parseTickets(const QJsonArray &jsonArr);
-  static QList<Project> parseProjects(const QJsonArray &jsonArr);
+	private:
+		void handleProjectsResponse(const QJsonObject &response);
+		void handleTicketsResponse(const QJsonObject &response, Project &project);
 
- private:
-  struct Data {
-    QList<Project> projects;
+		static QList<Ticket> parseTickets(const QJsonArray &jsonArr);
+		static QList<Project> parseProjects(const QJsonArray &jsonArr);
 
-    explicit Data(const QList<Project> &projects = {}) : projects(projects) {}
-  };
+	private:
+		struct Data {
+			QList<Project> projects;
 
- private:
-  Data mData;
+			explicit Data(const QList<Project> &projects = {}) : projects(projects) {}
+		};
 
-  // QAbstractItemModel interface
- public:
-  QHash<int, QByteArray> roleNames() const override;
+	private:
+		Data mData;
+		TicketsListModel *mTicketsModel = nullptr;
 
-  int rowCount(const QModelIndex &parent) const override;
+		// QAbstractItemModel interface
+	public:
+		QHash<int, QByteArray> roleNames() const override;
 
-  QVariant data(const QModelIndex &index, int role) const;
-};
+		int rowCount(const QModelIndex &parent) const override;
+
+		QVariant data(const QModelIndex &index, int role) const;
+	};
 }  // namespace qpm
 
 #endif  // QPM_MEMBERAREACONTROLLER

@@ -39,18 +39,18 @@ namespace qpm {
 		return *this;
 	}
 
-    Project &Project::operator=(const Project &other) {
-        if (this == &other) {
-            return *this;
-        }
+	Project &Project::operator=(const Project &other) {
+		if (this == &other) {
+			return *this;
+		}
 
-        mName = other.mName;
-        mId = other.mId;
-        mIcon = other.mIcon;
-        mTickets = other.mTickets;
+		mName = other.mName;
+		mId = other.mId;
+		mIcon = other.mIcon;
+		mTickets = other.mTickets;
 
-        return *this;
-    }
+		return *this;
+	}
 
 	const QString &Project::title() const {
 		return mName;

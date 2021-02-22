@@ -7,12 +7,12 @@
 #include "api/Constants.hpp"
 
 namespace qpm {
-	Ticket::Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id  ) : mName(std::move(
+	Ticket::Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id) : mName(std::move(
 			m_name)), mDescription(std::move(m_description)), mPriority(m_priority), mId(m_id) {}
 
-    Ticket& Ticket::operator=(const Ticket &other) {
+	Ticket &Ticket::operator=(const Ticket &other) {
 		if (this == &other) {
-            return *this;
+			return *this;
 		}
 
 		mName = other.mName;
@@ -20,7 +20,7 @@ namespace qpm {
 		mPriority = other.mPriority;
 		mId = other.mId;
 
-        return *this;
+		return *this;
 	}
 
 	Ticket &Ticket::operator=(Ticket &&other) noexcept {
@@ -53,5 +53,13 @@ namespace qpm {
 			qDebug() << json;
 			return std::nullopt;
 		}
+	}
+
+	const QString &Ticket::title() const {
+		return mName;
+	}
+
+	const QString &Ticket::description() const {
+		return mDescription;
 	}
 }

@@ -2,59 +2,63 @@
 #define TICKETSLISTMODEL_HPP
 
 #include <QAbstractItemModel>
+#include <QJsonObject>
+#include <QJsonArray>
+#include "model/Ticket.hpp"
+#include "model/Project.hpp"
 
-class TicketsListModel : QAbstractListModel
-{
-Q_OBJECT
-	Q_PROPERTY(QList<Ticket> tickets READ Tickets WRITE setTickets NOTIFY
-			           TicketsChanged)
-public:
-	enum Roles {
-		TitleRole = Qt::UserRole + 1,
-		ImageRole,
+namespace qpm {
+
+	class TicketsListModel : public QAbstractListModel {
+	Q_OBJECT
+		Q_PROPERTY(QList<Ticket> tickets READ tickets WRITE setTickets NOTIFY
+				           ticketsChanged)
+	public:
+		enum Roles {
+			TitleRole = Qt::UserRole + 1,
+			DescriptionRole,
+		};
+
+	public:
+		explicit TicketsListModel(QObject *parent = nullptr);
+
+		QList<Ticket> &tickets() { return mData.tickets; }
+	public slots:
+		void setTickets(const QList<Ticket> &Tickets) {
+			mData.tickets = Tickets;
+			emit ticketsChanged();
+		}
+
+	signals:
+		void updated();
+		void ticketsChanged();
+
+	public:  // QML Handlers
+		Q_INVOKABLE void update(int32_t pid);
+
+	private:
+		void handleTicketsResponse(const QJsonObject &response);
+
+		static QList<Ticket> parseTickets(const QJsonArray &jsonArr);
+
+	private:
+		struct Data {
+			QList<Ticket> tickets;
+
+			explicit Data(const QList<Ticket> &tickets = {}) : tickets(tickets) {}
+		};
+
+	private:
+		Data mData;
+
+		// QAbstractItemModel interface
+	public:
+		QHash<int, QByteArray> roleNames() const override;
+
+		int rowCount(const QModelIndex &parent) const override;
+
+		QVariant data(const QModelIndex &index, int role) const;
 	};
-
-public:
-	explicit TicketsListModel(QObject *parent = nullptr);
-
-	QList<Ticket> &tickets() { return mData.Tickets; }
-public slots:
-	void setTickets(const QList<Ticket> &Tickets) {
-		mData.Tickets = Tickets;
-		emit ticketsChanged();
-	}
-
-signals:
-	void updated();
-	void ticketsChanged();
-
-public:  // QML Handlers
-	Q_INVOKABLE void update();
-
-private:
-	void handleTicketsResponse(const QJsonObject &response);
-	void handleTicketsResponse(const QJsonObject &response, Ticket &Ticket);
-
-	static QList<Ticket> parseTickets(const QJsonArray &jsonArr);
-	static QList<Ticket> parseTickets(const QJsonArray &jsonArr);
-
-private:
-	struct Data {
-		QList<Ticket> Tickets;
-
-		explicit Data(const QList<Ticket> &Tickets = {}) : Tickets(Tickets) {}
-	};
-
-private:
-	Data mData;
-
-	// QAbstractItemModel interface
-public:
-	QHash<int, QByteArray> roleNames() const override;
-
-	int rowCount(const QModelIndex &parent) const override;
-
-	QVariant data(const QModelIndex &index, int role) const;
 };
 
 #endif // TICKETSLISTMODEL_HPP

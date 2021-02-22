@@ -16,7 +16,7 @@ namespace qpm {
 		using finishFunction = std::function<void()>;
 
 
-		using loginFunction = std::function<void(bool, const QString&)>;
+		using loginFunction = std::function<void(bool, const QString &)>;
 	private:
 		static const QString KEY_QNETWORK_REPLY_ERROR;
 		static const QString KEY_CONTENT_NOT_FOUND;
