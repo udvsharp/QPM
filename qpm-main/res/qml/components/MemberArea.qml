@@ -12,84 +12,114 @@ import com.udvsharp.TicketsListModel 1.0
 SplitView {
     id: splitView
 
-    Component.onCompleted: {
-        ProjectsListModel.update()
-    }
+    Component {
+        id: projectDelegate
 
-    ListView {
-        id: projectsListView
+        Rectangle {
+            id: projectDelegateContainer
+            width: ListView.view.width
+            height: 50
 
-        SplitView.minimumWidth: 0.1 * splitView.width
-        SplitView.preferredWidth: 0.25 * splitView.width
-        SplitView.maximumWidth: 0.5 * splitView.width
+            color: {
+                ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
+            }
 
-        Component {
-            id: projectDelegate
+            Row {
+                anchors.fill: parent
 
-            Rectangle {
-                id: projectDelegateContainer
-                width: ListView.view.width
-                height: 50
+                spacing: CStyles.Dimen.spaceM
+                Image {
+                    id: projectImage
+                    source: model.imageSrc
 
-                color: ListView.isCurrentItem ? "lightblue" : "transparent"
-                Rectangle {
-                    Image {
-                        id: projectImage
-                        width: height
-                        height: projectDelegateContainer.height;
-                        source: model.imageSrc // TODO: connect to model
+                    width: height
+                    height: 50
+                    anchors {
+                        verticalCenter: parent.verticalCenter
                     }
 
-                    Text {
-                        id: projectTitle
-                        text: model.title
+                    property bool rounded: true
+                    property bool adapt: true
 
-                        anchors {
-                            leftMargin: CStyles.Dimen.spaceM
-                            left: projectImage.right
-                            verticalCenter: projectDelegateContainer.verticalCenter
-                        }
+                    layer.enabled: rounded
+                    layer.effect: ShaderEffect {
+                        property real adjustX: projectImage.adapt ? Math.max(width / height, 1) : 1
+                        property real adjustY: projectImage.adapt ? Math.max(1 / (width / height), 1) : 1
+
+                        fragmentShader: "#ifdef GL_ES
+                            precision lowp float;
+                        #endif // GL_ES
+                        varying highp vec2 qt_TexCoord0;
+                        uniform highp float qt_Opacity;
+                        uniform lowp sampler2D source;
+                        uniform lowp float adjustX;
+                        uniform lowp float adjustY;
+
+                        void main(void) {
+                            lowp float x, y;
+                            x = (qt_TexCoord0.x - 0.5) * adjustX;
+                            y = (qt_TexCoord0.y - 0.5) * adjustY;
+                            float delta = adjustX != 1.0 ? fwidth(y) / 2.0 : fwidth(x) / 2.0;
+                            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
+                                * step(x * x + y * y, 0.25)
+                                * smoothstep((x * x + y * y) , 0.25 + delta, 0.25)
+                                * qt_Opacity;
+                        }"
                     }
                 }
 
-                MouseArea {
-                    id: itemArea
-                    z: 1
-                    hoverEnabled: true
-                    anchors.fill: parent
+                Text {
+                    id: projectTitle
+                    text: model.title
 
-                    cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
-                    onClicked: {
-                        projectsListView.currentIndex = index
-                        ProjectsListModel.select(index)
+                    color: {
+                        projectDelegateContainer.ListView.isCurrentItem ? CStyles.Color.white : CStyles.Color.black
+                    }
+                    font {
+                        bold: true
+                        pixelSize: CStyles.Dimen.fontS
+                    }
+
+                    anchors {
+                        verticalCenter: parent.verticalCenter
                     }
                 }
             }
-        }
 
-        model: ProjectsListModel
-        delegate: projectDelegate
-        focus: true
+            MouseArea {
+                id: itemArea
+                z: 1
+                hoverEnabled: true
+                anchors.fill: parent
+
+                cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+                onClicked: {
+                    projectsListView.currentIndex = index
+                    ProjectsListModel.select(index)
+                }
+            }
+        }
     }
 
-    ListView {
-        id: ticketsListView
-
-        SplitView.minimumWidth: 0.1 * splitView.width
-        SplitView.preferredWidth: 0.25 * splitView.width
-        SplitView.maximumWidth: 0.5 * splitView.width
-
-        Component {
+    Component {
             id: ticketDelegate
 
             Rectangle {
                 width: ListView.view.width
-                height: 50
+                height: 60
+                radius: CStyles.Dimen.radiusM
 
-                color: ListView.isCurrentItem ? "lightblue" : "transparent"
+//                property color textColor: ListView.isCurrentItem ? CStyles.Color.white : CStyles.Color.black
+//                color: ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
                 Column {
-                    Text { text: '<b>Title:</b> ' + model.title }
-                    Text { text: '<b>Description:</b> ' + model.description }
+                    Text {
+                        text: '<b>Title:</b> ' + model.title
+//                        color: parent.textColor
+                    }
+                    Text {
+                        text: '<b>Description:</b> ' + model.description
+//                        color: parent.textColor
+                    }
                 }
 
                 MouseArea {
@@ -104,7 +134,34 @@ SplitView {
                     }
                 }
             }
-        }
+    }
+
+    Component.onCompleted: {
+        ProjectsListModel.update()
+    }
+
+    ListView {
+        id: projectsListView
+
+        SplitView.minimumWidth: 0.1 * splitView.width
+        SplitView.preferredWidth: 0.25 * splitView.width
+        SplitView.maximumWidth: 0.5 * splitView.width
+
+        spacing: 0
+
+        model: ProjectsListModel
+        delegate: projectDelegate
+        focus: true
+    }
+
+    ListView {
+        id: ticketsListView
+
+        SplitView.minimumWidth: 0.1 * splitView.width
+        SplitView.preferredWidth: 0.75 * splitView.width
+        SplitView.maximumWidth: 0.5 * splitView.width
+
+        spacing: CStyles.Dimen.spaceS
 
         delegate: ticketDelegate
         model: TicketsListModel

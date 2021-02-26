@@ -43,7 +43,7 @@ QList<Project> ProjectsListModel::parseProjects(const QJsonArray &jsonArr) {
 QHash<int, QByteArray> ProjectsListModel::roleNames() const {
   QHash<int, QByteArray> roles;
   roles[TitleRole] = "title";
-  roles[ImageRole] = "imageUrl";
+  roles[ImageRole] = "imageSrc";
   return roles;
 }
 
