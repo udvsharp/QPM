@@ -27,6 +27,10 @@ int main(int argc, char **argv) {
 void registerQmlTypes() {
 	using namespace qpm;
 
+    // Meta types
+    qRegisterMetaType<int32_t>("int32_t");
+
+    // Classes
 	auto *projectsListModel = new ProjectsListModel;
 	auto *ticketsListModel = new TicketsListModel;
 	projectsListModel->connectTo(ticketsListModel);

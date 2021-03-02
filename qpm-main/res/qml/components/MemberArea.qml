@@ -1,8 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.12
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.14
 
-import "../components" as CControls
+import "../components/controls" as CControls
 import "../styles" as CStyles
 
 import com.udvsharp.ProjectsListModel 1.0
@@ -18,7 +18,7 @@ SplitView {
         Rectangle {
             id: projectDelegateContainer
             width: ListView.view.width
-            height: 50
+            height: 70
 
             color: {
                 ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
@@ -26,51 +26,24 @@ SplitView {
 
             Row {
                 anchors.fill: parent
-
                 spacing: CStyles.Dimen.spaceM
-                Image {
+                padding: CStyles.Dimen.spaceS
+
+                CControls.RoundedImage {
                     id: projectImage
                     source: model.imageSrc
 
                     width: height
-                    height: 50
+                    height: projectDelegateContainer.height - 2 * CStyles.Dimen.spaceXS
                     anchors {
                         verticalCenter: parent.verticalCenter
-                    }
-
-                    property bool rounded: true
-                    property bool adapt: true
-
-                    layer.enabled: rounded
-                    layer.effect: ShaderEffect {
-                        property real adjustX: projectImage.adapt ? Math.max(width / height, 1) : 1
-                        property real adjustY: projectImage.adapt ? Math.max(1 / (width / height), 1) : 1
-
-                        fragmentShader: "#ifdef GL_ES
-                            precision lowp float;
-                        #endif // GL_ES
-                        varying highp vec2 qt_TexCoord0;
-                        uniform highp float qt_Opacity;
-                        uniform lowp sampler2D source;
-                        uniform lowp float adjustX;
-                        uniform lowp float adjustY;
-
-                        void main(void) {
-                            lowp float x, y;
-                            x = (qt_TexCoord0.x - 0.5) * adjustX;
-                            y = (qt_TexCoord0.y - 0.5) * adjustY;
-                            float delta = adjustX != 1.0 ? fwidth(y) / 2.0 : fwidth(x) / 2.0;
-                            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
-                                * step(x * x + y * y, 0.25)
-                                * smoothstep((x * x + y * y) , 0.25 + delta, 0.25)
-                                * qt_Opacity;
-                        }"
                     }
                 }
 
                 Text {
                     id: projectTitle
                     text: model.title
+                    wrapMode: Text.Wrap
 
                     color: {
                         projectDelegateContainer.ListView.isCurrentItem ? CStyles.Color.white : CStyles.Color.black
@@ -98,6 +71,26 @@ SplitView {
                     ProjectsListModel.select(index)
                 }
             }
+
+            states: [
+                State {
+                    name: "Full Width"
+                    when: projectDelegateContainer.width > 240
+                    PropertyChanges {
+                        target: projectTitle
+                        visible: true
+                    }
+                },
+                State {
+                    name: "Minimal Width"
+                    when: projectDelegateContainer.width <= 240
+                    PropertyChanges {
+                        target: projectTitle
+                        visible: false
+                        width: 0
+                    }
+                }
+            ]
         }
     }
 
@@ -143,7 +136,7 @@ SplitView {
     ListView {
         id: projectsListView
 
-        SplitView.minimumWidth: 0.1 * splitView.width
+        SplitView.minimumWidth: 70
         SplitView.preferredWidth: 0.25 * splitView.width
         SplitView.maximumWidth: 0.5 * splitView.width
 
@@ -168,3 +161,5 @@ SplitView {
         focus: true
     }
 }
+
+

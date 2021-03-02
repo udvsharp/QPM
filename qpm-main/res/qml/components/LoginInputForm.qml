@@ -1,8 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.14
 
-import "../components" as CControls
+import "../components/controls" as CControls
 import "../styles" as CStyles
 
 import com.udvsharp.AuthController 1.0
@@ -123,7 +123,7 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignCenter
         font {
-            pixelSize: CStyles.Dimen.fontXS
+            pixelSize: CStyles.Dimen.fontS
             bold: true
         }
     }

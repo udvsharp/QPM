@@ -1,7 +1,7 @@
-import QtQuick
-import QtQuick.Controls as Controls
+import QtQuick 2.12
+import QtQuick.Controls 2.12 as Controls
 
-import "../styles" as CStyles
+import "../../styles" as CStyles
 
 Controls.Button {
     id: button

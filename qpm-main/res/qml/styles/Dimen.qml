@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick
+import QtQuick 2.12
 
 QtObject {
     readonly property real spaceXS: 8
@@ -16,6 +16,6 @@ QtObject {
     readonly property real fontS: 16
     readonly property real fontM: 24
 
-    readonly property real fieldHeightDefault: 40
-    readonly property real fieldWidthDefault: 320
+    readonly property real fieldHeightDefault: 60
+    readonly property real fieldWidthDefault: 380
 }

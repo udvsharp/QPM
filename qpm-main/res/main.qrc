@@ -2,30 +2,21 @@
     <qresource prefix="/qml">
         <file alias="main.qml">qml/main.qml</file>
     </qresource>
-
     <qresource prefix="/qml/styles">
         <file alias="qmldir">qml/styles/qmldir</file>
-
         <file alias="Color.qml">qml/styles/Color.qml</file>
         <file alias="Dimen.qml">qml/styles/Dimen.qml</file>
     </qresource>
-
     <qresource prefix="/qml/components">
-        <file alias="InputField.qml">qml/components/InputField.qml</file>
-
         <file alias="LoginInputForm.qml">qml/components/LoginInputForm.qml</file>
         <file alias="MemberArea.qml">qml/components/MemberArea.qml</file>
     </qresource>
-
     <qresource prefix="/qml/components/controls">
-        <file alias="Color.qml">qml/styles/Color.qml</file>
-
-        <file alias="Button.qml">qml/components/Controls/button.qml</file>
-        <file alias="InputField.qml">qml/components/Controls/inputField.qml</file>
+        <file alias="Button.qml">qml/components/controls/Button.qml</file>
+        <file alias="InputField.qml">qml/components/controls/InputField.qml</file>
+        <file alias="RoundedImage.qml">qml/components/controls/RoundedImage.qml</file>
     </qresource>
-
     <qresource prefix="/qml/components/items">
-
         <file alias="ProjectListItem.qml">qml/components/items/ProjectListItem.qml</file>
         <file alias="TicketListItem.qml">qml/components/items/TicketListItem.qml</file>
     </qresource>

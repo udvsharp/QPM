@@ -1,7 +1,7 @@
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 
-import "../styles" as CStyles
+import "../../styles" as CStyles
 
 TextField {
     id: input
@@ -23,7 +23,7 @@ TextField {
     verticalAlignment: TextInput.AlignVCenter
     font {
         pixelSize: height / 3
-        italic: true
+        italic: false
     }
     color: CStyles.Color.accentDark
     echoMode: this.password ? TextInput.Password : TextInput.Normal
