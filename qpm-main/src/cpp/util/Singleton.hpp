@@ -3,6 +3,7 @@
 #ifndef QPM_SINGLETON
 #define QPM_SINGLETON
 
+#include <mutex>
 #include <QOBject>
 
 namespace qpm {
@@ -12,34 +13,18 @@ namespace qpm {
 		using ref = Singleton<T> &;
 		using const_ref = Singleton<T> &;
 		using ptr = Singleton<T> *;
-	protected:
-		Singleton() = default;
+    protected:
+        Singleton() = default;
 	public:
-		static T &Instance() {
-			if (sInstance == nullptr) {
-				sInstance = new T();
-			}
-			return *sInstance;
-		}
-
-		template<typename... Args>
-		static T &Reset(Args &&... args) {
-			sInstance = new T(std::forward<Args>(args)...);
-			return *sInstance;
-		}
-
-		~Singleton() {
-			delete sInstance;
-		}
+        static T &Instance() {
+            static T instance;
+            return instance;
+        }
 
 		// forbidden
 		ref operator=(const_ref other) = delete;
-		Singleton(const_ref other) = delete;
-	private:
-		static T *sInstance;
-	};
-
-	template<typename T> T *Singleton<T>::sInstance = nullptr;
+        Singleton(const_ref other) = delete;
+    };
 }
 
 // Some macros
