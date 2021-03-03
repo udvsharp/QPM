@@ -13,40 +13,56 @@ namespace qpm {
 	}
 
 	QNetworkReply *Api::loginUser(const QString &login, const QString &password) {
-		QNetworkRequest request;
-
 		QUrl url = mBaseUrl.arg("login");
-		request.setUrl(url);
+		QNetworkRequest request = makeRequest(url);
 
-		request.setRawHeader("Content-Type", "application/json");
-		request.setSslConfiguration(mSSLConfig); // TODO: question that
-
-		QVariantMap data;
-		data.insert("login", login);
-		data.insert("password", password);
-		// TODO: SSLOption
 		QNetworkReply *reply;
-		QByteArray dataByteArray = variantMapToJson(data);
+		QByteArray dataByteArray = makeParamsJson(
+				{
+						{"login",    login},
+						{"password", password}
+				});
 		reply = mManager.post(request, dataByteArray);
 		ignoreDefaultErrors(reply);
 
 		return reply;
 	}
 
-	QNetworkReply *Api::registerUser(const QString &login, const QString &password) {
-		QNetworkRequest request;
+	QByteArray Api::makeParamsJson(const std::unordered_map<QString, QVariant>& map) {
+		QVariantMap data;
+		for (const auto &i : map) {
+			data.insert(i.first, i.second);
+		}
 
-		QUrl url = mBaseUrl.arg("register");
+		QByteArray dataByteArray = variantMapToJson(data);
+		return dataByteArray;
+	}
+
+	QNetworkRequest Api::makeRequest(const QUrl &url, const QString &authToken) {
+		QNetworkRequest request;
 		request.setUrl(url);
 
-		request.setRawHeader("Content-Type", "application/json");
-		request.setSslConfiguration(mSSLConfig); // TODO: question that
+		if (!authToken.isEmpty()) {
+			request.setRawHeader("authorization", authToken.toUtf8());
+		} else {
+			request.setRawHeader("Content-Type", "application/json");
+		}
 
-		QVariantMap data;
-		data.insert("login", login);
-		data.insert("password", password);
+		request.setSslConfiguration(mSSLConfig);
+
+		return request;
+	}
+
+	QNetworkReply *Api::registerUser(const QString &login, const QString &password) {
+		QUrl url = mBaseUrl.arg("register");
+		QNetworkRequest request = makeRequest(url);
+
 		QNetworkReply *reply;
-		QByteArray dataByteArray = variantMapToJson(data);
+		QByteArray dataByteArray = makeParamsJson(
+				{
+						{"login",    login},
+						{"password", password}
+				});
 		reply = mManager.post(request, dataByteArray);
 		ignoreDefaultErrors(reply);
 
@@ -54,13 +70,9 @@ namespace qpm {
 	}
 
 	QNetworkReply *Api::projects(const QString &authToken) {
-		QNetworkRequest request;
 
 		QUrl url = mBaseUrl.arg("projects");
-		request.setUrl(url);
-
-		request.setRawHeader("authorization", authToken.toUtf8());
-		request.setSslConfiguration(mSSLConfig); // TODO: question that
+		QNetworkRequest request = makeRequest(url, authToken);
 
 		QNetworkReply *reply;
 		reply = mManager.get(request);
@@ -70,13 +82,8 @@ namespace qpm {
 	}
 
 	QNetworkReply *Api::tickets(const QString &authToken, int32_t projectId) {
-		QNetworkRequest request;
-
 		QUrl url = mBaseUrl.arg("tickets/%1/").arg(projectId);
-		request.setUrl(url);
-
-		request.setRawHeader("authorization", authToken.toUtf8());
-		request.setSslConfiguration(mSSLConfig); // TODO: question that
+		QNetworkRequest request = makeRequest(url, authToken);
 
 		QNetworkReply *reply;
 		reply = mManager.get(request);
@@ -86,7 +93,6 @@ namespace qpm {
 	}
 
 	void Api::ignoreDefaultErrors(QNetworkReply *reply) {
-		// TODO: make this work maybe
 		static QList<QSslError> expectedErrors{
 				QSslError(QSslError::SelfSignedCertificate),
 				QSslError(QSslError::InvalidCaCertificate),

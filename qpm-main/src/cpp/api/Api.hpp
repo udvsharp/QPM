@@ -23,6 +23,10 @@ namespace qpm {
 	private:
 		static QByteArray variantMapToJson(const QVariantMap &map);
 		static void ignoreDefaultErrors(QNetworkReply *reply);
+
+		QNetworkRequest makeRequest(const QUrl &url, const QString& autoToken = "");
+
+        static QByteArray makeParamsJson(const std::unordered_map<QString, QVariant>& map);
 	private:
 		QString mBaseUrl;
 		QNetworkAccessManager mManager;
