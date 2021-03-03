@@ -32,6 +32,7 @@ QHash<int, QByteArray> TicketsListModel::roleNames() const {
   QHash<int, QByteArray> roles;
   roles[TitleRole] = "title";
   roles[DescriptionRole] = "description";
+  roles[PriorityRole] = "priority";
   return roles;
 }
 
@@ -54,6 +55,8 @@ QVariant TicketsListModel::data(const QModelIndex &index, int role) const {
       return QVariant(currentObject.title());
     case DescriptionRole:
       return QVariant(currentObject.description());
+  case PriorityRole:
+    return QVariant(currentObject.priority());
   }
 }
 

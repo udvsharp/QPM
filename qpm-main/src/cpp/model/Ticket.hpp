@@ -24,7 +24,8 @@ namespace qpm {
 		static std::optional<Ticket> from(const QJsonObject &obj);
 	public:
 		const QString &title() const;
-		const QString &description() const;
+        const QString &description() const;
+        int32_t priority() const;
 	private:
 		QString mName;
 		QString mDescription;

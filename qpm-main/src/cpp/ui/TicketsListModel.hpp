@@ -17,6 +17,7 @@ namespace qpm {
 		enum Roles {
 			TitleRole = Qt::UserRole + 1,
 			DescriptionRole,
+            PriorityRole,
 		};
 
 	public:

@@ -12,13 +12,17 @@ import com.udvsharp.TicketsListModel 1.0
 SplitView {
     id: splitView
 
+    readonly property double listItemHeightDefault: 60
+
+    // TODO: refactor delegades(separate files)
     Component {
         id: projectDelegate
+
 
         Rectangle {
             id: projectDelegateContainer
             width: ListView.view.width
-            height: 70
+            height: listItemHeightDefault
 
             color: {
                 ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
@@ -98,20 +102,36 @@ SplitView {
             id: ticketDelegate
 
             Rectangle {
+                id: ticketDelegateContainer
+
+                color: CStyles.Color.accentLight
+                height: childrenRect.height
                 width: ListView.view.width
-                height: 60
                 radius: CStyles.Dimen.radiusM
 
 //                property color textColor: ListView.isCurrentItem ? CStyles.Color.white : CStyles.Color.black
 //                color: ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
                 Column {
+                    height: childrenRect.height + 2 * CStyles.spaceS
+                    width: parent.width
+                    padding: CStyles.Dimen.spaceS
+                    spacing: CStyles.Dimen.spaceXS
+
                     Text {
-                        text: '<b>Title:</b> ' + model.title
-//                        color: parent.textColor
+                        text: model.title
+
+                        font {
+                            bold: true
+                            pixelSize: CStyles.Dimen.fontS
+                        }
                     }
                     Text {
-                        text: '<b>Description:</b> ' + model.description
-//                        color: parent.textColor
+                        text: model.priority + ": " + model.description
+
+                        font {
+                            bold: false
+                            pixelSize: CStyles.Dimen.fontS
+                        }
                     }
                 }
 
@@ -124,6 +144,7 @@ SplitView {
                     cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
                     onClicked: {
                         ticketsListView.currentIndex = index
+                        // TODO: open tickets window
                     }
                 }
             }
@@ -135,8 +156,9 @@ SplitView {
 
     ListView {
         id: projectsListView
+        orientation: ListView.Vertical
 
-        SplitView.minimumWidth: 70
+        SplitView.minimumWidth: listItemHeightDefault + CStyles.Dimen.spaceM
         SplitView.preferredWidth: 0.25 * splitView.width
         SplitView.maximumWidth: 0.5 * splitView.width
 
@@ -149,10 +171,7 @@ SplitView {
 
     ListView {
         id: ticketsListView
-
-        SplitView.minimumWidth: 0.1 * splitView.width
-        SplitView.preferredWidth: 0.75 * splitView.width
-        SplitView.maximumWidth: 0.5 * splitView.width
+        orientation: ListView.Vertical
 
         spacing: CStyles.Dimen.spaceS
 

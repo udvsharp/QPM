@@ -62,4 +62,8 @@ namespace qpm {
 	const QString &Ticket::description() const {
 		return mDescription;
 	}
+
+    int32_t Ticket::priority() const {
+        return mPriority;
+    }
 }
