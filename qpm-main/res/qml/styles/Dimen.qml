@@ -18,4 +18,6 @@ QtObject {
 
     readonly property real fieldHeightDefault: 60
     readonly property real fieldWidthDefault: 380
+
+    readonly property double listItemHeightDefault: 60
 }

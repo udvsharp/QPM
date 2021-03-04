@@ -3,13 +3,15 @@
         <file alias="main.qml">qml/main.qml</file>
     </qresource>
     <qresource prefix="/qml/styles">
-        <file alias="qmldir">qml/styles/qmldir</file>
         <file alias="Color.qml">qml/styles/Color.qml</file>
         <file alias="Dimen.qml">qml/styles/Dimen.qml</file>
+        <file alias="qmldir">qml/styles/qmldir</file>
     </qresource>
     <qresource prefix="/qml/components">
         <file alias="LoginInputForm.qml">qml/components/LoginInputForm.qml</file>
         <file alias="MemberArea.qml">qml/components/MemberArea.qml</file>
+        <file alias="ProjectsPanel.qml">qml/components/ProjectsPanel.qml</file>
+        <file alias="TicketsPanel.qml">qml/components/TicketsPanel.qml</file>
     </qresource>
     <qresource prefix="/qml/components/controls">
         <file alias="Button.qml">qml/components/controls/Button.qml</file>

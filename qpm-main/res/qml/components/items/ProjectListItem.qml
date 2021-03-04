@@ -3,10 +3,12 @@ import QtQuick 2.12
 import "../controls" as CControls
 import "../../styles" as CStyles
 
+import com.udvsharp.ProjectsListModel 1.0
+
 Rectangle {
     id: projectDelegateContainer
     width: ListView.view.width
-    height: 70
+    height: CStyles.Dimen.listItemHeightDefault
 
     color: {
         ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
@@ -80,3 +82,4 @@ Rectangle {
         }
     ]
 }
+
