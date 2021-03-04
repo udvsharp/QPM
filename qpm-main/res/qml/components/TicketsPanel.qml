@@ -9,6 +9,11 @@ import "../components/items" as CItems
 import com.udvsharp.TicketsListModel 1.0
 
 Rectangle {
+    id: panel
+    signal selected(int index)
+
+    color: CStyles.Color.bgColor
+
     ListView {
         id: ticketsListView
         orientation: ListView.Vertical
@@ -21,6 +26,11 @@ Rectangle {
         model: TicketsListModel
         delegate: CItems.TicketListItem {
             width: ListView.view.width
+
+            onSelected: {
+                ticketsListView.currentIndex = index
+                panel.selected(index)
+            }
         }
 
         focus: true

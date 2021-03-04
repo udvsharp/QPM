@@ -11,8 +11,12 @@
 
 namespace qpm {
 	class Ticket {
-	Q_GADGET
+        Q_GADGET
+        Q_PROPERTY(QString title MEMBER mName READ title)
+        Q_PROPERTY(QString description MEMBER mDescription READ description)
+        Q_PROPERTY(int32_t priority MEMBER mPriority READ priority)
 	public:
+        Ticket() {}
 		Ticket(QString m_name, QString m_description, int32_t m_priority, int32_t m_id);
 
 		Ticket(const Ticket &other) { *this = other; };
@@ -32,6 +36,10 @@ namespace qpm {
 		int32_t mPriority; // TODO: enum
 		int32_t mId;
 	};
+
 }
+
+Q_DECLARE_METATYPE(qpm::Ticket)
+Q_DECLARE_METATYPE(qpm::Ticket*)
 
 #endif //QPM_TICKET

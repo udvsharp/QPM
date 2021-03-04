@@ -41,7 +41,7 @@ namespace qpm {
 
 	public:  // QML Handlers
 		Q_INVOKABLE void update();
-		Q_INVOKABLE void select(int32_t index);
+        Q_INVOKABLE void select(int32_t index);
 
 	private:
 		void handleProjectsResponse(const QJsonObject &response);

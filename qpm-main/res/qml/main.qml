@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.14
 import "components" as CControls
 import "styles" as CStyles
 
+import com.udvsharp.TicketsListModel 1.0
+
 ApplicationWindow {
     id: application
     visible: true
@@ -72,6 +74,10 @@ ApplicationWindow {
             CControls.MemberArea {
                 property bool hasHeader: true
                 property string headerText: "Projects"
+
+                onTicketSelected: {
+                    console.log(TicketsListModel.get(index).title)
+                }
             }
         }
 

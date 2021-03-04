@@ -12,6 +12,15 @@ import com.udvsharp.ProjectsListModel 1.0
 SplitView {
     id: splitView
 
+    handle: Rectangle {
+        implicitWidth: 4
+        implicitHeight: 4
+        color: SplitHandle.pressed ? CStyles.Color.accentDarkest
+            : (SplitHandle.hovered ? Qt.lighter(CStyles.Color.accentDark, 1.2) : CStyles.Color.accentDark)
+    }
+
+    signal ticketSelected(int index)
+
     Component.onCompleted: {
         ProjectsListModel.update()
     }
@@ -23,7 +32,9 @@ SplitView {
     }
 
     TicketsPanel {
-
+        onSelected: {
+            ticketSelected(index)
+        }
     }
 }
 

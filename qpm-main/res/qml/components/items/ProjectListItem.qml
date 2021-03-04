@@ -10,6 +10,10 @@ Rectangle {
     width: ListView.view.width
     height: CStyles.Dimen.listItemHeightDefault
 
+    property double minWidth: height - CStyles.Dimen.SpaceXS
+
+    signal selected(int index)
+
     color: {
         ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
     }
@@ -57,15 +61,14 @@ Rectangle {
 
         cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
         onClicked: {
-            projectsListView.currentIndex = index
-            ProjectsListModel.select(index)
+            projectDelegateContainer.selected(index)
         }
     }
 
     states: [
         State {
             name: "Full Width"
-            when: projectDelegateContainer.width > 240
+            when: projectDelegateContainer.width > minWidth
             PropertyChanges {
                 target: projectTitle
                 visible: true
@@ -73,7 +76,7 @@ Rectangle {
         },
         State {
             name: "Minimal Width"
-            when: projectDelegateContainer.width <= 240
+            when: projectDelegateContainer.width <= minWidth
             PropertyChanges {
                 target: projectTitle
                 visible: false

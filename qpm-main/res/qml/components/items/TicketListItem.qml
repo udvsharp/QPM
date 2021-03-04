@@ -6,17 +6,18 @@ import "../../styles" as CStyles
 
 Rectangle {
     height: childrenRect.height
+    color: "transparent"
+
+    signal selected(int index)
 
     Rectangle {
         id: ticketDelegateContainer
 
-        color: CStyles.Color.accentLight
+        color: CStyles.Color.white
         height: childrenRect.height
         width: parent.width
-        radius: CStyles.Dimen.radiusM
+        radius: CStyles.Dimen.radiusL
 
-//                property color textColor: ListView.isCurrentItem ? CStyles.Color.white : CStyles.Color.black
-//                color: ListView.isCurrentItem ? CStyles.Color.accentDark : "transparent"
         Column {
             id: column
             height: childrenRect.height + 2 * CStyles.spaceS
@@ -32,12 +33,70 @@ Rectangle {
                     pixelSize: CStyles.Dimen.fontS
                 }
             }
+
             Text {
-                text: model.priority + ": " + model.description
+                text: model.description
 
                 font {
                     bold: false
                     pixelSize: CStyles.Dimen.fontS
+                }
+            }
+
+
+
+            Canvas {
+                id: priorityCanvas
+
+                width: 200
+                height: 36
+                onPaint: {
+                    function rgba(r, g, b, a) {
+                        return Qt.rgba(r / 255, g / 255, b / 255, a);
+                    }
+
+                    const priorityColors =
+                         [
+                             rgba(218, 223, 225, 1),
+                             rgba(107, 235, 52, 1),
+                             rgba(225, 235, 52, 1),
+                             rgba(235, 192, 52, 1),
+                             rgba(235, 64, 52, 1),
+                         ];
+
+                    var ctx = getContext("2d");
+                    function circle(x, y, radius, style) {
+                        ctx.beginPath();
+                        ctx.fillStyle = style;
+                        ctx.arc(x, y, radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    function drawColumn(n, color) {
+                        const radius = height / 4;
+                        const spacingModifier = 0.9;
+                        const finalRadius = radius * spacingModifier;
+
+                        const xOffset = radius * (1 + n * 2);
+                        circle(xOffset, radius, finalRadius, color);
+                        circle(xOffset, radius * 3, finalRadius, color);
+                    }
+
+                    function drawPriority(priority) {
+                        const activeColor = priorityColors[priority - 1];
+                        const inactiveColor = rgba(230, 220, 220, 0.5);
+
+                        let i = 0;
+                        for (i = 0; i < priority && i < 5; ++i) {
+                            drawColumn(i, activeColor);
+                        }
+
+                        for (; i < 5; ++i) {
+                            drawColumn(i, inactiveColor);
+                        }
+                    }
+
+                    drawPriority(model.priority);
                 }
             }
         }
@@ -50,8 +109,7 @@ Rectangle {
 
             cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
             onClicked: {
-                ticketsListView.currentIndex = index
-                // TODO: open tickets window
+                selected(index)
             }
         }
     }

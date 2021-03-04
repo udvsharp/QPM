@@ -29,6 +29,9 @@ void registerQmlTypes() {
 
     // Meta types
     qRegisterMetaType<int32_t>("int32_t");
+    qRegisterMetaType<Ticket>();
+
+    qmlRegisterAnonymousType<Ticket>("Ticket", 1);
 
     // Classes
 	auto *projectsListModel = new ProjectsListModel;

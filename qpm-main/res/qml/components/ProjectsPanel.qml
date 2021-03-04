@@ -11,6 +11,8 @@ import com.udvsharp.ProjectsListModel 1.0
 
 Rectangle {
 
+    color: CStyles.Color.bgColor
+
     ListView {
         id: projectsListView
         orientation: ListView.Vertical
@@ -22,7 +24,10 @@ Rectangle {
 
         model: ProjectsListModel
         delegate: CItems.ProjectListItem {
-
+            onSelected: {
+                projectsListView.currentIndex = index
+                ProjectsListModel.select(index)
+            }
         }
 
         focus: true

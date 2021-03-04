@@ -14,4 +14,6 @@ QtObject {
     readonly property color black: "#000000"
 
     readonly property color shadowColor: "#80000000"
+
+    readonly property color bgColor: "#dae3ea"
 }

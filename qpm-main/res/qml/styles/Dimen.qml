@@ -10,6 +10,7 @@ QtObject {
 
     readonly property real radiusS: 2
     readonly property real radiusM: 4
+    readonly property real radiusL: 8
 
     readonly property real fontXXS: 8
     readonly property real fontXS: 12
@@ -19,5 +20,5 @@ QtObject {
     readonly property real fieldHeightDefault: 60
     readonly property real fieldWidthDefault: 380
 
-    readonly property double listItemHeightDefault: 60
+    readonly property double listItemHeightDefault: 70
 }

@@ -36,6 +36,7 @@ namespace qpm {
 
 	public:  // QML Handlers
 		Q_INVOKABLE void update(int32_t pid);
+        Q_INVOKABLE Ticket* get(int32_t index) { return &mData.tickets[index]; }
 
 	private:
 		void handleTicketsResponse(const QJsonObject &response);
